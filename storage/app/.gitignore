@@ -1,2 +1,5 @@
 *
+!failed/
+!posts/
+!processed/
 !.gitignore
