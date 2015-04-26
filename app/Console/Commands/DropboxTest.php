@@ -74,18 +74,15 @@ class DropboxTest extends Command {
 	      			if(fclose($fd) !== true) {
 	      				throw new Exception("Can not save file", 1);
 	      			}
-	      			// $tres1 = $client->delete($k);
-      				// if(!isset($tres1['is_deleted']) && $tres1['is_deleted'] !== true) {
-      				// 	throw new Exception("Can not delete file", 1);
-      				// }
-      				// unset($fileToSave[$k]);
+	      			
+      				unset($fileToSave[$k]);
 				}
 			}
 			if(count($fileToSave) === 0) {
-				// $tres2 = $client->delete($value['path']);
-				// if(!isset($tres2['is_deleted']) && $tres2['is_deleted'] !== true) {
-	   //    					throw new Exception("Can not delete dir", 1);
-  		// 		}
+				$tres2 = $client->delete($value['path']);
+				if(!isset($tres2['is_deleted']) && $tres2['is_deleted'] !== true) {
+  					throw new Exception("Can not delete dir", 1);
+  				}
 			}
 		}
 	}
