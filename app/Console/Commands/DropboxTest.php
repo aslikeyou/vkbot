@@ -58,6 +58,7 @@ class DropboxTest extends Command {
 
 			$savePath = storage_path().'/app/posts/'.str_replace('/vkposts/', '', $value['path']);
 			mkdir($savePath);
+			$this->info($savePath.' dir created!');
 			$fileToSave = [];
 			foreach ($childResponse['contents'] as $file) {
 				if($file['is_dir']) {
@@ -74,6 +75,8 @@ class DropboxTest extends Command {
 	      			if(fclose($fd) !== true) {
 	      				throw new Exception("Can not save file", 1);
 	      			}
+
+	      			$this->info($file['path'].' saved as '.$filePath);
 	      			
       				unset($fileToSave[$k]);
 				}
@@ -83,6 +86,7 @@ class DropboxTest extends Command {
 				if(!isset($tres2['is_deleted']) && $tres2['is_deleted'] !== true) {
   					throw new Exception("Can not delete dir", 1);
   				}
+  				$this->info($value['path'].' was deleted from dropbox!');
 			}
 		}
 	}
