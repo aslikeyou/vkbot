@@ -9,7 +9,8 @@
 		"vladkens/vk": "dev-master",
 		"predis/predis": "1.1.*@dev",
 		"guzzlehttp/guzzle": "~5.2",
-		"illuminate/html": "~5.0"
+		"illuminate/html": "~5.0",
+		"dropbox/dropbox-sdk": "dev-master"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
