@@ -1,5 +1,6 @@
 <?php namespace App\Console\Commands;
 
+use App\Exceptions\ArrException;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -62,76 +63,119 @@ class VkPublisher extends Command {
         return $a;
     }
 
-	/**
-	 * Execute the console command.
-	 *
-	 * @return mixed
-	 */
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     * @throws ArrException
+     * @throws \Exception
+     */
 	public function fire()
 	{
-        // todo fix music name
-        $path = storage_path().'/app/posts';
-        $a = $this->sortFilesBy1stNumber($this->getDirsNoDots($path));
 
-        if(count($a) < 1) {
+        // todo fix music name
+        $path2posts = storage_path().'/app/posts';
+        $postDirectories = $this->sortFilesBy1stNumber($this->getDirsNoDots($path2posts));
+
+        if(count($postDirectories) < 1) {
             $this->info('No dirs left');
             return ;
         }
 
-        $toPublish = $path.'/'.$a[0];
-        $b = $this->getAllFilesNoDots($toPublish);
+        $firstPostDirectory = $path2posts.'/'.$postDirectories[0];
+        $filesInPost = $this->getAllFilesNoDots($firstPostDirectory);
         $message = '';
         $attachments = [];
         $musicAttachments = [];
-        foreach($b as $file) {
-            $path = $toPublish.'/'.$file;
-            $ext = pathinfo($path, PATHINFO_EXTENSION);
+        foreach($filesInPost as $file) {
+            $path2posts = $firstPostDirectory.'/'.$file;
+            $ext = pathinfo($path2posts, PATHINFO_EXTENSION);
 
             switch($ext) {
                 case 'txt':
-                    $message = mb_convert_encoding(file_get_contents($path), "utf-8", "windows-1251");
+                    $message = mb_convert_encoding(file_get_contents($path2posts), "utf-8", "windows-1251");
                     break;
                 case 'jpeg':
                 case 'jpg':
-                    $attachments[] = $path;
+                    $attachments[] = $path2posts;
                     break;
                 case 'mp3':
-                    $musicAttachments[] = $path;
+                    $musicAttachments[] = $path2posts;
                     break;
             }
         }
+
+        $newDirPath = '';
 
         try {
             $vk = new VK(config('vk.app_id'), config('vk.api_secret'), config('vk.access_token'));
 
             if(!$vk->isAuth()) {
-                throw new \Exception('Invalid auth');
+                throw new ArrException("Can not auth to VK", 1, null, [
+                    'params' => [
+                        'app_id' => config('vk.app_id'),
+                        'api_secret' => config('vk.api_secret'),
+                        'access_token' => config('vk.access_token')
+                    ]
+                ]
+                );
             }
+            $this->info("Login to VK success!");
 
-
-            $gid = config('vk.group_id');
+            $groupId = config('vk.group_id');
             $postRequestToVk = [
-                'owner_id' => '-'.$gid,
+                'owner_id' => '-'.$groupId,
                 'attachments' => []
             ];
 
             if(count($musicAttachments) > 0) {
-                $b = array_map(function($musicFile) use ($vk) {
+                $filesInPost = [];
+
+                foreach ($musicAttachments as $musicFile) {
+                    $this->info("Start upload audio file: ".$musicFile." ...");
                     $response = \VkApiHelper::uploadAudio($vk, $musicFile);
+                    if(isset($response['error']['error_msg'])) {
+                        $this->error(
+                            sprintf('%s : %s'
+                                , $response['error']['error_code']
+                                , $response['error']['error_msg']
+                            )
+                        );
+                        continue;
+                    }
+
+                    if(!isset($response['response']['aid'])) {
+                        throw new ArrException(
+                            "Can not upload audio : $musicFile"
+                            , 1
+                            , null
+                            , [
+                                'params' => $musicFile
+                                ,'response' => $response
+                            ]
+                        );
+                        
+                    }
+                    $this->info("End upload audio file: ".$musicFile."!");
                     $response = $response['response'];
-                    return 'audio'.$response['owner_id'].'_'.$response['aid'];
-                },$musicAttachments);
+                    $filesInPost[] = 'audio'.$response['owner_id'].'_'.$response['aid'];
+                }
 
                 $postRequestToVk['attachments'] = array_merge(
                     $postRequestToVk['attachments'],
-                    $b
+                    $filesInPost
                 );
             }
 
             if(count($attachments) > 0) {
                 $attachments = array_splice($attachments, 0, 5 - count($musicAttachments));
 
-                $res = \VkApiHelper::uploadPhoto($vk, $gid, $attachments);
+                $this->info("Start upload photos...");
+                var_dump($attachments);
+                $res = \VkApiHelper::uploadPhoto($vk, $groupId, $attachments);
+                
+                $this->info("End upload photos!");
+
                 $postRequestToVk['attachments'] = array_merge(
                     $postRequestToVk['attachments'],
                     array_map(function($item) {
@@ -147,27 +191,35 @@ class VkPublisher extends Command {
                 $postRequestToVk['message'] = $message;
             }
 
-            $b = $vk->api('wall.post', $postRequestToVk, 'array', 'post');
-            if(isset($b['response']) && isset($b['response']['post_id'])) {
-                $this->info("Post SUCCESS!!!");
-                $this->info("Moving dir {$toPublish} ...");
-                $newPath = storage_path().'/app/processed/'.$a[0];
-                rename($toPublish, $newPath);
-                $this->info("New path: $newPath");
-            } else {
-                throw new \Exception('Invalid response');
+            $filesInPost = $vk->api('wall.post', $postRequestToVk, 'array', 'post');
+            if(!isset($filesInPost['response']) || !isset($filesInPost['response']['post_id'])) {
+                throw new ArrException(
+                        "Can not run wall.post"
+                        , 1
+                        , null
+                        , [
+                            'params' => $postRequestToVk
+                            , 'response' => $filesInPost
+                        ]);
             }
 
+            $this->info("Post SUCCESS!!!");
+            $newDirPath = storage_path().'/app/processed/'.$postDirectories[0];
+        } catch(ArrException $e) {
+            var_dump($e->getOptions());
+            throw $e;
         } catch(\Exception $e) {
             $this->error("Processing failed. ".$e->getMessage());
+            $this->error($e->getFile().' : '.$e->getLine());
 
-            $this->info("Moving dir {$toPublish} ...");
-            $newPath = storage_path().'/app/failed/'.$a[0];
-            rename($toPublish, $newPath);
-            $this->info("New path: $newPath");
+            $newDirPath = storage_path().'/app/failed/'.$postDirectories[0];
+        } finally {
+            $this->info("Moving dir {$firstPostDirectory} ...");
+            $this->info("New path: $newDirPath");
+
+            rename($firstPostDirectory, $newDirPath);
+
         }
-
-
 	}
 
 	/**

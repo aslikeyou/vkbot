@@ -26,17 +26,26 @@ class VkApiHelper {
             'offset' => '0',
             'count' => '1000'
         ]);
-
-        //if(isset)
-
-
-
     }
 
     public static function uploadPhoto(VK $vk, $groupId, $files) {
         $user_friends = $vk->api('photos.getWallUploadServer', [
-            'group_id' => $groupId
+            'group_id' => $groupId,
         ]);
+
+        if(!isset($user_friends['response']['upload_url'])) {
+            throw new \App\Exceptions\ArrException(
+                        "Vk returned invalid Request"
+                        , 1
+                        , null
+                        , [
+                            'params' => [
+                                'group_id' => $groupId
+                            ],
+                            'response' => $user_friends
+                        ]);
+            
+        }
 
         $client = new Client();
         $body = [];
@@ -47,12 +56,45 @@ class VkApiHelper {
             'body' => $body
         ]);
 
-
-        $res2 = $vk->api('photos.saveWallPhoto', array_merge([
+        if ($res->getStatusCode() !== 200) {
+            throw new \App\Exceptions\ArrException(
+                "Can not upload photo files"
+                , 1
+                , null
+                , [
+                    'params' => [
+                        'upload_url' => $user_friends['response']['upload_url']
+                        ,'body' => $body
+                    ],
+                    'response' => $res->getBody()
+                ]
+                );
+        }
+        
+        $paramsSaveWallPhoto = array_merge([
             'group_id' => $groupId,
-        ], $res->json()));
+        ], $res->json());
 
-        return $res2['response'];
+        echo "Running photos.saveWallPhoto...\n";
+        $toReturn = $vk->api(
+            'photos.saveWallPhoto'
+            , $paramsSaveWallPhoto
+            , 'array'
+            , 'post'
+        );
+
+        var_dump($toReturn);
+        if(!isset($toReturn['response'][0]['id'])) {
+            throw new \App\Exceptions\ArrException(
+                "Vk returned invalid Request"
+                , 1
+                , null
+                , [
+                    'params' => $paramsSaveWallPhoto,
+                    'response' => $toReturn
+                ]);
+        }
+        return $toReturn['response'];
     }
 
     public static function uploadAudio(VK $vk, $file) {
