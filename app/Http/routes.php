@@ -15,6 +15,83 @@ Route::get('/manage', function() {
     return view('manage');
 });
 
+Route::get('/groups/{uid}/last', function($uid) {
+    $vk = VkApiHelper::getI();
+
+    $res = $vk->api('newsfeed.get', [
+        'source_ids' => $uid,
+        'filter'   => 'post',
+        'count'    => 2,
+    ]);
+    if(!isset($res['response'])) {
+        throw new \App\Exceptions\BadResponseException(
+            "Vk returns wrong response",
+            $res
+        );
+    }
+    $res = $res['response']['items'][1];
+
+    $newres = $vk->api('wall.post', [
+        'owner_id' => '-97448590',
+        'message' => $res['text'],
+        'attachments' => implode(',',array_map(function($item) {
+            $media = $item[$item['type']];
+
+            $str = $item['type'].$media['owner_id'].'_'.$media['pid'];
+            echo $str.'<br>';
+            return $str;
+        }, $res['attachments']))
+    ],'array', 'post');
+    echo "<pre>";
+    print_r($newres);
+});
+
+
+
+Route::get('/groups/delete/smaller_then/{count}', function($count = 50000) {
+    $vk = new VK\VK(Config::get('vk.app_id'), Config::get('vk.api_secret'), Config::get('vk.access_token'));
+    $res = $vk->api('groups.get', [
+        'extended' => 1
+    ]);
+    if(!isset($res['response'])) {
+        throw new Exception('No response');
+    }
+    $res = $res['response'];
+    if(!is_array($res) || !is_int($res[0])) {
+        throw new Exception('Invalid response');
+    }
+    unset($res[0]);
+    $deletedGroupsCount = 0;
+    foreach($res as $r) {
+        if($r['is_admin'] === 1) {
+            continue ;
+        }
+        $res = $vk->api('groups.getMembers', [
+            'group_id' => $r['gid'],
+            'count' => 0
+        ]);
+        if(!isset($res['response']['count'])) {
+            throw new Exception(print_r($res, 1));
+        }
+
+        if($res['response']['count'] < $count) {
+            $res = $vk->api('groups.leave', [
+                'group_id' => $r['gid'],
+            ]);
+            if(!isset($res['response']) || $res['response'] !== 1) {
+                throw new Exception(print_r($res, 1));
+            }
+            $deletedGroupsCount++;
+        }
+        //break;
+        usleep(1000000);
+    }
+
+    echo "It was deleted #".$deletedGroupsCount.' groups!';
+
+
+});
+
 // https://github.com/vladkens/VK/blob/master/Samples/example-2.php
 Route::get('/manage1', function() {
     $vk = new VK\VK(Config::get('vk.app_id'), Config::get('vk.api_secret'), Config::get('vk.access_token'));

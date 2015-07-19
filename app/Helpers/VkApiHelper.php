@@ -52,6 +52,7 @@ class VkApiHelper {
         foreach($files as $f) {
             $body['file' . (count($body) + 1)] = fopen($f, 'r');
         }
+
         $res = $client->post($user_friends['response']['upload_url'], [
             'body' => $body
         ]);
@@ -76,6 +77,7 @@ class VkApiHelper {
         ], $res->json());
 
         echo "Running photos.saveWallPhoto...\n";
+
         $toReturn = $vk->api(
             'photos.saveWallPhoto'
             , $paramsSaveWallPhoto
@@ -83,7 +85,7 @@ class VkApiHelper {
             , 'post'
         );
 
-        var_dump($toReturn);
+
         if(!isset($toReturn['response'][0]['id'])) {
             throw new \App\Exceptions\ArrException(
                 "Vk returned invalid Request"
@@ -112,5 +114,40 @@ class VkApiHelper {
         $b = $vk->api('audio.save', $res->json());
 
         return $b;
+    }
+
+    public static function makePost(VK $vk, $groupId, $msg = '', $attachments = []) {
+        $postRequestToVk = [
+            'owner_id' => '-'.$groupId,
+            'attachments' => []
+        ];
+
+        // only photos here
+        // only 5 attaches max
+        $attachments = array_splice($attachments, 0, 5);
+
+        $res = \VkApiHelper::uploadPhoto($vk, $groupId, $attachments);
+
+        $postRequestToVk['attachments'] = array_merge(
+            $postRequestToVk['attachments'],
+            array_map(function($item) {
+                return $item['id'];
+            }, $res)
+        );
+
+        if(strlen($msg) > 0) {
+            $postRequestToVk['message'] = $msg;
+        }
+        $postRequestToVk['attachments'] = implode(',',$postRequestToVk['attachments']);
+
+        $filesInPost = $vk->api('wall.post', $postRequestToVk, 'array', 'post');
+
+        if(!isset($filesInPost['response']) || !isset($filesInPost['response']['post_id'])) {
+            throw new RuntimeException(
+                "Can not run wall.post"
+            );
+        }
+
+        return $filesInPost;
     }
 }
