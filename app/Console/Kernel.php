@@ -38,6 +38,7 @@ class Kernel extends ConsoleKernel
                 ]);
             } catch (\Exception $e) {
                 echo get_class($e);
+                $e->getTrace();
                 echo PHP_EOL;
             }
 
@@ -49,6 +50,7 @@ class Kernel extends ConsoleKernel
                 ]);
             } catch (\Exception $e) {
                 echo get_class($e);
+                $e->getTrace();
                 echo PHP_EOL;
             }
             try {
@@ -59,6 +61,7 @@ class Kernel extends ConsoleKernel
                 ]);
             } catch (\Exception $e) {
                 echo get_class($e);
+                $e->getTrace();
                 echo PHP_EOL;
             }
 
@@ -70,6 +73,7 @@ class Kernel extends ConsoleKernel
                 ]);
             } catch (\Exception $e) {
                 echo get_class($e);
+                $e->getTrace();
                 echo PHP_EOL;
             }
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cbcaaa9f184abadfbcd5bf142b7bfaad",
+    "hash": "e7bc879272ef4894645ccf47fe897540",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -1222,7 +1222,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/d84bca131b514ef1b30ba3358c0ecfb3615a658c",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/871d526300b365b6536419045d3997f2a39c1179",
                 "reference": "d84bca131b514ef1b30ba3358c0ecfb3615a658c",
                 "shasum": ""
             },
@@ -2281,13 +2281,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vladkens/VK.git",
-                "reference": "88bdf9f2fd1f603e37cebd2fb44ad1d97bc40182"
+                "url": "https://github.com/aslikeyou/VK.git",
+                "reference": "18c0066ce9e3683cf3fd5feb77b860c1801a55c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vladkens/VK/zipball/88bdf9f2fd1f603e37cebd2fb44ad1d97bc40182",
-                "reference": "88bdf9f2fd1f603e37cebd2fb44ad1d97bc40182",
+                "url": "https://api.github.com/repos/aslikeyou/VK/zipball/18c0066ce9e3683cf3fd5feb77b860c1801a55c5",
+                "reference": "18c0066ce9e3683cf3fd5feb77b860c1801a55c5",
                 "shasum": ""
             },
             "require": {
@@ -2299,7 +2299,6 @@
                     "VK": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2316,7 +2315,12 @@
                 "vk",
                 "vk.com"
             ],
-            "time": "2015-06-15 19:22:03"
+            "support": {
+                "email": "vladkens@yandex.ru",
+                "issues": "https://github.com/vladkens/VK/issues",
+                "source": "https://github.com/vladkens/VK"
+            },
+            "time": "2015-07-20 16:01:15"
         },
         {
             "name": "vlucas/phpdotenv",
