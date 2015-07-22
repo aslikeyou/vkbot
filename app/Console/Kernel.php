@@ -30,54 +30,44 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            echo '1st' . PHP_EOL;
-            try {
-                \Artisan::call('vk:newsfeed', [
+            $group1 = [
+                [
                     'source_group' => '12382740',
                     'target_group' => '97448590'
-                ]);
-            } catch (\Exception $e) {
-                echo get_class($e);
-                echo $e->getTraceAsString();
-                echo PHP_EOL;
-            }
-
-            echo '2st' . PHP_EOL;
-            try {
-                \Artisan::call('vk:newsfeed', [
+                ],
+                [
                     'source_group' => '45739071',
                     'target_group' => '97448590'
-                ]);
-            } catch (\Exception $e) {
-                echo get_class($e);
-                echo $e->getTraceAsString();
-                echo PHP_EOL;
-            }
-            try {
-                echo '3st' . PHP_EOL;
-                \Artisan::call('vk:newsfeed', [
+                ]
+            ];
+
+            $group2 = [
+                [
                     'source_group' => '36166073',
                     'target_group' => '89446579'
-                ]);
-            } catch (\Exception $e) {
-                echo get_class($e);
-                echo $e->getTraceAsString();
-                echo PHP_EOL;
-            }
-
-            echo '4st' . PHP_EOL;
-            try {
-                \Artisan::call('vk:newsfeed', [
+                ],
+                [
                     'source_group' => '27470044',
                     'target_group' => '89446579'
-                ]);
-            } catch (\Exception $e) {
-                echo get_class($e);
-                echo $e->getTraceAsString();
-                echo PHP_EOL;
-            }
+                ]
+            ];
+            $groups = [
+                $group1, $group2
+            ];
 
-        })->everyMinute()
+            foreach($groups as $k => $g) {
+                $randKey = mt_rand(0, count($g) - 1);
+                echo "=== {$k} ===" . PHP_EOL;
+
+                try {
+                    \Artisan::call('vk:newsfeed', $g[$randKey]);
+                } catch (\Exception $e) {
+                    echo get_class($e);
+                    echo $e->getTraceAsString();
+                    echo PHP_EOL;
+                }
+            }
+        })->everyThirtyMinutes()
             ->name('vkbot')
             ->withoutOverlapping()
             ->sendOutputTo(storage_path() . '/logs/vkreadnewsfeed.log');;
