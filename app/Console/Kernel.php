@@ -31,12 +31,13 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             $group1 = [
+                // 22741624
                 [
-                    'source_group' => '12382740',
-                    'target_group' => '97448590'
+                    'source_group' => '12382740', // еп       | https://vk.com/fuck_humor
+                    'target_group' => '97448590' // уши вянут | https://vk.com/ebat_fun
                 ],
                 [
-                    'source_group' => '45739071',
+                    'source_group' => '22741624', // https://vk.com/art_fun
                     'target_group' => '97448590'
                 ]
             ];
