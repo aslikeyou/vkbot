@@ -44,12 +44,16 @@ class Kernel extends ConsoleKernel
 
             $group2 = [
                 [
-                    'source_group' => '36166073',
-                    'target_group' => '89446579'
+                    'source_group' => '36166073', // https://vk.com/on.heels |  Ты на понтах, я на каблуках
+                    'target_group' => '89446579' // whats w love
                 ],
                 [
-                    'source_group' => '27470044',
-                    'target_group' => '89446579'
+                    'source_group' => '34486229', // https://vk.com/secretswoman
+                    'target_group' => '89446579' // whats w love
+                ],
+                [
+                    'source_group' => '39728801', // https://vk.com/9o_6o_9o
+                    'target_group' => '89446579' // whats w love
                 ]
             ];
             $groups = [
