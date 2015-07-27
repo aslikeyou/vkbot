@@ -2,6 +2,7 @@
 
 use App\Exceptions\AlreadyExistException;
 use App\Exceptions\InvalidResponseException;
+use App\Exceptions\SpamPostException;
 use App\VkActivity;
 use Illuminate\Console\Command;
 use VK\VK;
@@ -83,6 +84,19 @@ class VkReadNewsFeed extends Command
         $targetGroup = $this->argument('target_group');
 
         $firstFilteredItem = $this->getLastPostFromGroup($vk, $uid);
+
+        // http://stackoverflow.com/questions/6127545/finding-urls-from-text-string-via-php-and-regex
+        $pattern = '#(www\.|https?://)?[a-z0-9]+\.[a-z0-9]{2,4}\S*#i';
+        // http://stackoverflow.com/questions/6004343/converting-br-into-a-new-line-for-use-in-a-text-area
+        $breaks = array("<br />","<br>","<br/>");
+
+        $firstFilteredItem['text'] = str_ireplace($breaks, "\r\n", $firstFilteredItem['text']);
+        preg_match_all($pattern, $firstFilteredItem['text'], $matches, PREG_PATTERN_ORDER);
+
+        if(isset($matches[0]) && is_array($matches[0]) && count($matches[0]) > 0) {
+            // then its spam post // go next
+            throw new SpamPostException($firstFilteredItem['text']);
+        }
 
         if (VkActivity::where($whereClause = [
             'source_id' => $firstFilteredItem['source_id'],
