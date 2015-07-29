@@ -52,7 +52,11 @@ class Kernel extends ConsoleKernel
                     'target_group' => '89446579' // whats w love
                 ],
                 [
-                    'source_group' => '39728801', // https://vk.com/9o_6o_9o
+                    'source_group' => '24024157', // https://vk.com/kilo40gram
+                    'target_group' => '89446579' // whats w love
+                ],
+                [
+                    'source_group' => '40684908', // https://vk.com/womanoonline
                     'target_group' => '89446579' // whats w love
                 ]
             ];
