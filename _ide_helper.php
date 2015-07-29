@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.8 (LTS) on 2015-07-27.
+ * Generated for Laravel 5.1.7 (LTS) on 2015-07-29.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -429,16 +429,6 @@ namespace {
          */
         public static function handle($request, $type = 1, $catch = true){
             return \Illuminate\Foundation\Application::handle($request, $type, $catch);
-        }
-        
-        /**
-         * Determine if middleware has been disabled for the application.
-         *
-         * @return bool 
-         * @static 
-         */
-        public static function shouldSkipMiddleware(){
-            return \Illuminate\Foundation\Application::shouldSkipMiddleware();
         }
         
         /**
@@ -2843,7 +2833,7 @@ namespace {
          *
          * @param \Closure $callback
          * @return mixed 
-         * @throws \Throwable
+         * @throws \Exception
          * @static 
          */
         public static function transaction($callback){
@@ -7614,7 +7604,7 @@ namespace {
          * @param mixed $data
          * @param string $queue
          * @return mixed 
-         * @throws \Throwable
+         * @throws \Exception
          * @static 
          */
         public static function push($job, $data = '', $queue = null){

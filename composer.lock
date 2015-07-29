@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e7bc879272ef4894645ccf47fe897540",
+    "hash": "5bc866a7c0b776f2223a16c37a2c40f8",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -1222,7 +1222,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/871d526300b365b6536419045d3997f2a39c1179",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/0eaa1d929d7dfcb686081320ccbc2b62d94ded4d",
                 "reference": "d84bca131b514ef1b30ba3358c0ecfb3615a658c",
                 "shasum": ""
             },
@@ -1425,6 +1425,52 @@
                 "shell"
             ],
             "time": "2015-07-16 15:26:57"
+        },
+        {
+            "name": "rap2hpoutre/laravel-log-viewer",
+            "version": "v0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rap2hpoutre/laravel-log-viewer.git",
+                "reference": "7eccaae6c29e7d5b0eb46cb2a29457d6dcbd0367"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/7eccaae6c29e7d5b0eb46cb2a29457d6dcbd0367",
+                "reference": "7eccaae6c29e7d5b0eb46cb2a29457d6dcbd0367",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.2.*|5.*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/controllers"
+                ],
+                "psr-0": {
+                    "Rap2hpoutre\\LaravelLogViewer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "rap2hpoutre",
+                    "email": "raphael@ornikar.com"
+                }
+            ],
+            "description": "A Laravel log reader",
+            "keywords": [
+                "log",
+                "log-reader",
+                "log-viewer",
+                "logging"
+            ],
+            "time": "2015-07-19 21:36:23"
         },
         {
             "name": "react/promise",
@@ -2286,7 +2332,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aslikeyou/VK/zipball/18c0066ce9e3683cf3fd5feb77b860c1801a55c5",
+                "url": "https://api.github.com/repos/aslikeyou/VK/zipball/02a7dbd419c18b72e15d72380cab40bb73a04356",
                 "reference": "18c0066ce9e3683cf3fd5feb77b860c1801a55c5",
                 "shasum": ""
             },

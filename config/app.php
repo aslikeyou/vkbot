@@ -148,7 +148,8 @@ return [
         'App\Providers\HelperServiceProvider',
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-		Intervention\Image\ImageServiceProvider::class
+		Intervention\Image\ImageServiceProvider::class,
+		'Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider',
 	],
 
 	/*

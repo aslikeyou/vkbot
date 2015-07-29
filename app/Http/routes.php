@@ -15,6 +15,8 @@ Route::get('/manage', function() {
     return view('manage');
 });
 
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
 Route::get('/groups/{uid}/last', function($uid) {
     $vk = VkApiHelper::getI();
 
