@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.7 (LTS) on 2015-07-29.
+ * Generated for Laravel 5.1.19 (LTS) on 2015-10-04.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -432,6 +432,16 @@ namespace {
         }
         
         /**
+         * Determine if middleware has been disabled for the application.
+         *
+         * @return bool 
+         * @static 
+         */
+        public static function shouldSkipMiddleware(){
+            return \Illuminate\Foundation\Application::shouldSkipMiddleware();
+        }
+        
+        /**
          * Determine if the application configuration is cached.
          *
          * @return bool 
@@ -728,11 +738,12 @@ namespace {
          * @param string $concrete
          * @param string $abstract
          * @param \Closure|string $implementation
+         * @return void 
          * @static 
          */
         public static function addContextualBinding($concrete, $abstract, $implementation){
             //Method inherited from \Illuminate\Container\Container            
-            return \Illuminate\Foundation\Application::addContextualBinding($concrete, $abstract, $implementation);
+            \Illuminate\Foundation\Application::addContextualBinding($concrete, $abstract, $implementation);
         }
         
         /**
@@ -752,7 +763,7 @@ namespace {
         /**
          * Register a shared binding in the container.
          *
-         * @param string $abstract
+         * @param string|array $abstract
          * @param \Closure|string|null $concrete
          * @return void 
          * @static 
@@ -1145,7 +1156,7 @@ namespace {
         }
         
         /**
-         * Bootstrap the application for HTTP requests.
+         * Bootstrap the application for artisan commands.
          *
          * @return void 
          * @static 
@@ -1636,6 +1647,16 @@ namespace {
          */
         public static function directive($name, $handler){
             \Illuminate\View\Compilers\BladeCompiler::directive($name, $handler);
+        }
+        
+        /**
+         * Get the list of custom directives.
+         *
+         * @return array 
+         * @static 
+         */
+        public static function getCustomDirectives(){
+            return \Illuminate\View\Compilers\BladeCompiler::getCustomDirectives();
         }
         
         /**
@@ -2209,7 +2230,7 @@ namespace {
          * @static 
          */
         public static function increment($key, $value = 1){
-            return \Illuminate\Cache\FileStore::increment($key, $value);
+            return \Illuminate\Cache\RedisStore::increment($key, $value);
         }
         
         /**
@@ -2221,7 +2242,7 @@ namespace {
          * @static 
          */
         public static function decrement($key, $value = 1){
-            return \Illuminate\Cache\FileStore::decrement($key, $value);
+            return \Illuminate\Cache\RedisStore::decrement($key, $value);
         }
         
         /**
@@ -2231,27 +2252,49 @@ namespace {
          * @static 
          */
         public static function flush(){
-            \Illuminate\Cache\FileStore::flush();
+            \Illuminate\Cache\RedisStore::flush();
         }
         
         /**
-         * Get the Filesystem instance.
+         * Begin executing a new tags operation.
          *
-         * @return \Illuminate\Filesystem\Filesystem 
+         * @param array|mixed $names
+         * @return \Illuminate\Cache\RedisTaggedCache 
          * @static 
          */
-        public static function getFilesystem(){
-            return \Illuminate\Cache\FileStore::getFilesystem();
+        public static function tags($names){
+            return \Illuminate\Cache\RedisStore::tags($names);
         }
         
         /**
-         * Get the working directory of the cache.
+         * Get the Redis connection instance.
          *
-         * @return string 
+         * @return \Predis\ClientInterface 
          * @static 
          */
-        public static function getDirectory(){
-            return \Illuminate\Cache\FileStore::getDirectory();
+        public static function connection(){
+            return \Illuminate\Cache\RedisStore::connection();
+        }
+        
+        /**
+         * Set the connection name to be used.
+         *
+         * @param string $connection
+         * @return void 
+         * @static 
+         */
+        public static function setConnection($connection){
+            \Illuminate\Cache\RedisStore::setConnection($connection);
+        }
+        
+        /**
+         * Get the Redis database instance.
+         *
+         * @return \Illuminate\Redis\Database 
+         * @static 
+         */
+        public static function getRedis(){
+            return \Illuminate\Cache\RedisStore::getRedis();
         }
         
         /**
@@ -2261,7 +2304,31 @@ namespace {
          * @static 
          */
         public static function getPrefix(){
-            return \Illuminate\Cache\FileStore::getPrefix();
+            return \Illuminate\Cache\RedisStore::getPrefix();
+        }
+        
+        /**
+         * Set the cache key prefix.
+         *
+         * @param string $prefix
+         * @return void 
+         * @static 
+         */
+        public static function setPrefix($prefix){
+            \Illuminate\Cache\RedisStore::setPrefix($prefix);
+        }
+        
+        /**
+         * Begin executing a new tags operation.
+         *
+         * @param string $name
+         * @return \Illuminate\Cache\TaggedCache 
+         * @deprecated since version 5.1. Use tags instead.
+         * @static 
+         */
+        public static function section($name){
+            //Method inherited from \Illuminate\Cache\TaggableStore            
+            return \Illuminate\Cache\RedisStore::section($name);
         }
         
     }
@@ -2472,10 +2539,11 @@ namespace {
          * Remove a cookie from the queue.
          *
          * @param string $name
+         * @return void 
          * @static 
          */
         public static function unqueue($name){
-            return \Illuminate\Cookie\CookieJar::unqueue($name);
+            \Illuminate\Cookie\CookieJar::unqueue($name);
         }
         
         /**
@@ -2631,664 +2699,6 @@ namespace {
             return \Illuminate\Database\DatabaseManager::getConnections();
         }
         
-        /**
-         * Set the query grammar to the default implementation.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function useDefaultQueryGrammar(){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::useDefaultQueryGrammar();
-        }
-        
-        /**
-         * Set the schema grammar to the default implementation.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function useDefaultSchemaGrammar(){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::useDefaultSchemaGrammar();
-        }
-        
-        /**
-         * Set the query post processor to the default implementation.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function useDefaultPostProcessor(){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::useDefaultPostProcessor();
-        }
-        
-        /**
-         * Get a schema builder instance for the connection.
-         *
-         * @return \Illuminate\Database\Schema\Builder 
-         * @static 
-         */
-        public static function getSchemaBuilder(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getSchemaBuilder();
-        }
-        
-        /**
-         * Begin a fluent query against a database table.
-         *
-         * @param string $table
-         * @return \Illuminate\Database\Query\Builder 
-         * @static 
-         */
-        public static function table($table){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::table($table);
-        }
-        
-        /**
-         * Get a new raw query expression.
-         *
-         * @param mixed $value
-         * @return \Illuminate\Database\Query\Expression 
-         * @static 
-         */
-        public static function raw($value){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::raw($value);
-        }
-        
-        /**
-         * Run a select statement and return a single result.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @return mixed 
-         * @static 
-         */
-        public static function selectOne($query, $bindings = array()){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::selectOne($query, $bindings);
-        }
-        
-        /**
-         * Run a select statement against the database.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @return array 
-         * @static 
-         */
-        public static function selectFromWriteConnection($query, $bindings = array()){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::selectFromWriteConnection($query, $bindings);
-        }
-        
-        /**
-         * Run a select statement against the database.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @param bool $useReadPdo
-         * @return array 
-         * @static 
-         */
-        public static function select($query, $bindings = array(), $useReadPdo = true){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::select($query, $bindings, $useReadPdo);
-        }
-        
-        /**
-         * Run an insert statement against the database.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @return bool 
-         * @static 
-         */
-        public static function insert($query, $bindings = array()){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::insert($query, $bindings);
-        }
-        
-        /**
-         * Run an update statement against the database.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @return int 
-         * @static 
-         */
-        public static function update($query, $bindings = array()){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::update($query, $bindings);
-        }
-        
-        /**
-         * Run a delete statement against the database.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @return int 
-         * @static 
-         */
-        public static function delete($query, $bindings = array()){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::delete($query, $bindings);
-        }
-        
-        /**
-         * Execute an SQL statement and return the boolean result.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @return bool 
-         * @static 
-         */
-        public static function statement($query, $bindings = array()){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::statement($query, $bindings);
-        }
-        
-        /**
-         * Run an SQL statement and get the number of rows affected.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @return int 
-         * @static 
-         */
-        public static function affectingStatement($query, $bindings = array()){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::affectingStatement($query, $bindings);
-        }
-        
-        /**
-         * Run a raw, unprepared query against the PDO connection.
-         *
-         * @param string $query
-         * @return bool 
-         * @static 
-         */
-        public static function unprepared($query){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::unprepared($query);
-        }
-        
-        /**
-         * Prepare the query bindings for execution.
-         *
-         * @param array $bindings
-         * @return array 
-         * @static 
-         */
-        public static function prepareBindings($bindings){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::prepareBindings($bindings);
-        }
-        
-        /**
-         * Execute a Closure within a transaction.
-         *
-         * @param \Closure $callback
-         * @return mixed 
-         * @throws \Exception
-         * @static 
-         */
-        public static function transaction($callback){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::transaction($callback);
-        }
-        
-        /**
-         * Start a new database transaction.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function beginTransaction(){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::beginTransaction();
-        }
-        
-        /**
-         * Commit the active database transaction.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function commit(){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::commit();
-        }
-        
-        /**
-         * Rollback the active database transaction.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function rollBack(){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::rollBack();
-        }
-        
-        /**
-         * Get the number of active transactions.
-         *
-         * @return int 
-         * @static 
-         */
-        public static function transactionLevel(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::transactionLevel();
-        }
-        
-        /**
-         * Execute the given callback in "dry run" mode.
-         *
-         * @param \Closure $callback
-         * @return array 
-         * @static 
-         */
-        public static function pretend($callback){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::pretend($callback);
-        }
-        
-        /**
-         * Log a query in the connection's query log.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @param float|null $time
-         * @return void 
-         * @static 
-         */
-        public static function logQuery($query, $bindings, $time = null){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::logQuery($query, $bindings, $time);
-        }
-        
-        /**
-         * Register a database query listener with the connection.
-         *
-         * @param \Closure $callback
-         * @return void 
-         * @static 
-         */
-        public static function listen($callback){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::listen($callback);
-        }
-        
-        /**
-         * Get a Doctrine Schema Column instance.
-         *
-         * @param string $table
-         * @param string $column
-         * @return \Doctrine\DBAL\Schema\Column 
-         * @static 
-         */
-        public static function getDoctrineColumn($table, $column){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getDoctrineColumn($table, $column);
-        }
-        
-        /**
-         * Get the Doctrine DBAL schema manager for the connection.
-         *
-         * @return \Doctrine\DBAL\Schema\AbstractSchemaManager 
-         * @static 
-         */
-        public static function getDoctrineSchemaManager(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getDoctrineSchemaManager();
-        }
-        
-        /**
-         * Get the Doctrine DBAL database connection instance.
-         *
-         * @return \Doctrine\DBAL\Connection 
-         * @static 
-         */
-        public static function getDoctrineConnection(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getDoctrineConnection();
-        }
-        
-        /**
-         * Get the current PDO connection.
-         *
-         * @return \PDO 
-         * @static 
-         */
-        public static function getPdo(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getPdo();
-        }
-        
-        /**
-         * Get the current PDO connection used for reading.
-         *
-         * @return \PDO 
-         * @static 
-         */
-        public static function getReadPdo(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getReadPdo();
-        }
-        
-        /**
-         * Set the PDO connection.
-         *
-         * @param \PDO|null $pdo
-         * @return $this 
-         * @static 
-         */
-        public static function setPdo($pdo){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::setPdo($pdo);
-        }
-        
-        /**
-         * Set the PDO connection used for reading.
-         *
-         * @param \PDO|null $pdo
-         * @return $this 
-         * @static 
-         */
-        public static function setReadPdo($pdo){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::setReadPdo($pdo);
-        }
-        
-        /**
-         * Set the reconnect instance on the connection.
-         *
-         * @param callable $reconnector
-         * @return $this 
-         * @static 
-         */
-        public static function setReconnector($reconnector){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::setReconnector($reconnector);
-        }
-        
-        /**
-         * Get the database connection name.
-         *
-         * @return string|null 
-         * @static 
-         */
-        public static function getName(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getName();
-        }
-        
-        /**
-         * Get an option from the configuration options.
-         *
-         * @param string $option
-         * @return mixed 
-         * @static 
-         */
-        public static function getConfig($option){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getConfig($option);
-        }
-        
-        /**
-         * Get the PDO driver name.
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getDriverName(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getDriverName();
-        }
-        
-        /**
-         * Get the query grammar used by the connection.
-         *
-         * @return \Illuminate\Database\Query\Grammars\Grammar 
-         * @static 
-         */
-        public static function getQueryGrammar(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getQueryGrammar();
-        }
-        
-        /**
-         * Set the query grammar used by the connection.
-         *
-         * @param \Illuminate\Database\Query\Grammars\Grammar $grammar
-         * @return void 
-         * @static 
-         */
-        public static function setQueryGrammar($grammar){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::setQueryGrammar($grammar);
-        }
-        
-        /**
-         * Get the schema grammar used by the connection.
-         *
-         * @return \Illuminate\Database\Schema\Grammars\Grammar 
-         * @static 
-         */
-        public static function getSchemaGrammar(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getSchemaGrammar();
-        }
-        
-        /**
-         * Set the schema grammar used by the connection.
-         *
-         * @param \Illuminate\Database\Schema\Grammars\Grammar $grammar
-         * @return void 
-         * @static 
-         */
-        public static function setSchemaGrammar($grammar){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::setSchemaGrammar($grammar);
-        }
-        
-        /**
-         * Get the query post processor used by the connection.
-         *
-         * @return \Illuminate\Database\Query\Processors\Processor 
-         * @static 
-         */
-        public static function getPostProcessor(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getPostProcessor();
-        }
-        
-        /**
-         * Set the query post processor used by the connection.
-         *
-         * @param \Illuminate\Database\Query\Processors\Processor $processor
-         * @return void 
-         * @static 
-         */
-        public static function setPostProcessor($processor){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::setPostProcessor($processor);
-        }
-        
-        /**
-         * Get the event dispatcher used by the connection.
-         *
-         * @return \Illuminate\Contracts\Events\Dispatcher 
-         * @static 
-         */
-        public static function getEventDispatcher(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getEventDispatcher();
-        }
-        
-        /**
-         * Set the event dispatcher instance on the connection.
-         *
-         * @param \Illuminate\Contracts\Events\Dispatcher $events
-         * @return void 
-         * @static 
-         */
-        public static function setEventDispatcher($events){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::setEventDispatcher($events);
-        }
-        
-        /**
-         * Determine if the connection in a "dry run".
-         *
-         * @return bool 
-         * @static 
-         */
-        public static function pretending(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::pretending();
-        }
-        
-        /**
-         * Get the default fetch mode for the connection.
-         *
-         * @return int 
-         * @static 
-         */
-        public static function getFetchMode(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getFetchMode();
-        }
-        
-        /**
-         * Set the default fetch mode for the connection.
-         *
-         * @param int $fetchMode
-         * @return int 
-         * @static 
-         */
-        public static function setFetchMode($fetchMode){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::setFetchMode($fetchMode);
-        }
-        
-        /**
-         * Get the connection query log.
-         *
-         * @return array 
-         * @static 
-         */
-        public static function getQueryLog(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getQueryLog();
-        }
-        
-        /**
-         * Clear the query log.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function flushQueryLog(){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::flushQueryLog();
-        }
-        
-        /**
-         * Enable the query log on the connection.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function enableQueryLog(){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::enableQueryLog();
-        }
-        
-        /**
-         * Disable the query log on the connection.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function disableQueryLog(){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::disableQueryLog();
-        }
-        
-        /**
-         * Determine whether we're logging queries.
-         *
-         * @return bool 
-         * @static 
-         */
-        public static function logging(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::logging();
-        }
-        
-        /**
-         * Get the name of the connected database.
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getDatabaseName(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getDatabaseName();
-        }
-        
-        /**
-         * Set the name of the connected database.
-         *
-         * @param string $database
-         * @return string 
-         * @static 
-         */
-        public static function setDatabaseName($database){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::setDatabaseName($database);
-        }
-        
-        /**
-         * Get the table prefix for the connection.
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getTablePrefix(){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::getTablePrefix();
-        }
-        
-        /**
-         * Set the table prefix in use by the connection.
-         *
-         * @param string $prefix
-         * @return void 
-         * @static 
-         */
-        public static function setTablePrefix($prefix){
-            //Method inherited from \Illuminate\Database\Connection            
-            \Illuminate\Database\SQLiteConnection::setTablePrefix($prefix);
-        }
-        
-        /**
-         * Set the table prefix and return the grammar.
-         *
-         * @param \Illuminate\Database\Grammar $grammar
-         * @return \Illuminate\Database\Grammar 
-         * @static 
-         */
-        public static function withTablePrefix($grammar){
-            //Method inherited from \Illuminate\Database\Connection            
-            return \Illuminate\Database\SQLiteConnection::withTablePrefix($grammar);
-        }
-        
     }
 
 
@@ -3420,11 +2830,13 @@ namespace {
          * @param int $perPage
          * @param array $columns
          * @param string $pageName
+         * @param int|null $page
          * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator 
+         * @throws \InvalidArgumentException
          * @static 
          */
-        public static function paginate($perPage = null, $columns = array(), $pageName = 'page'){
-            return \Illuminate\Database\Eloquent\Builder::paginate($perPage, $columns, $pageName);
+        public static function paginate($perPage = null, $columns = array(), $pageName = 'page', $page = null){
+            return \Illuminate\Database\Eloquent\Builder::paginate($perPage, $columns, $pageName, $page);
         }
         
         /**
@@ -4394,7 +3806,7 @@ namespace {
          * @return string 
          * @static 
          */
-        public static function implode($column, $glue = null){
+        public static function implode($column, $glue = ''){
             return \Illuminate\Database\Query\Builder::implode($column, $glue);
         }
         
@@ -4461,6 +3873,17 @@ namespace {
          */
         public static function avg($column){
             return \Illuminate\Database\Query\Builder::avg($column);
+        }
+        
+        /**
+         * Alias for the "avg" method.
+         *
+         * @param string $column
+         * @return float|int 
+         * @static 
+         */
+        public static function average($column){
+            return \Illuminate\Database\Query\Builder::average($column);
         }
         
         /**
@@ -4616,6 +4039,30 @@ namespace {
          */
         public static function useWritePdo(){
             return \Illuminate\Database\Query\Builder::useWritePdo();
+        }
+        
+        /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */
+        public static function hasMacro($name){
+            return \Illuminate\Database\Query\Builder::hasMacro($name);
+        }
+        
+        /**
+         * Dynamically handle calls to the class.
+         *
+         * @param string $method
+         * @param array $parameters
+         * @return mixed 
+         * @throws \BadMethodCallException
+         * @static 
+         */
+        public static function macroCall($method, $parameters){
+            return \Illuminate\Database\Query\Builder::macroCall($method, $parameters);
         }
         
     }
@@ -5586,6 +5033,8 @@ namespace {
         /**
          * Determine if the given content types match.
          *
+         * @param string $actual
+         * @param string $type
          * @return bool 
          * @static 
          */
@@ -5687,7 +5136,6 @@ namespace {
          * @param array $files The FILES parameters
          * @param array $server The SERVER parameters
          * @return \Symfony\Component\HttpFoundation\Request The duplicated request
-         * @api 
          * @static 
          */
         public static function duplicate($query = null, $request = null, $attributes = null, $cookies = null, $files = null, $server = null){
@@ -5824,8 +5272,7 @@ namespace {
          * @param array $cookies The COOKIE parameters
          * @param array $files The FILES parameters
          * @param array $server The SERVER parameters
-         * @param string $content The raw body data
-         * @api 
+         * @param string|resource $content The raw body data
          * @static 
          */
         public static function initialize($query = array(), $request = array(), $attributes = array(), $cookies = array(), $files = array(), $server = array(), $content = null){
@@ -5837,7 +5284,6 @@ namespace {
          * Creates a new request with values from PHP's super globals.
          *
          * @return \Symfony\Component\HttpFoundation\Request A new request
-         * @api 
          * @static 
          */
         public static function createFromGlobals(){
@@ -5859,7 +5305,6 @@ namespace {
          * @param array $server The server parameters ($_SERVER)
          * @param string $content The raw body data
          * @return \Symfony\Component\HttpFoundation\Request A Request instance
-         * @api 
          * @static 
          */
         public static function create($uri, $method = 'GET', $parameters = array(), $cookies = array(), $files = array(), $server = array(), $content = null){
@@ -5888,7 +5333,6 @@ namespace {
          * It overrides $_GET, $_POST, $_REQUEST, $_SERVER, $_COOKIE.
          * $_FILES is never overridden, see rfc1867
          *
-         * @api 
          * @static 
          */
         public static function overrideGlobals(){
@@ -5902,7 +5346,6 @@ namespace {
          * You should only list the reverse proxies that you manage directly.
          *
          * @param array $proxies A list of trusted proxies
-         * @api 
          * @static 
          */
         public static function setTrustedProxies($proxies){
@@ -6054,7 +5497,6 @@ namespace {
          * Gets the Session.
          *
          * @return \Symfony\Component\HttpFoundation\SessionInterface|null The session
-         * @api 
          * @static 
          */
         public static function getSession(){
@@ -6067,7 +5509,6 @@ namespace {
          * previous requests.
          *
          * @return bool 
-         * @api 
          * @static 
          */
         public static function hasPreviousSession(){
@@ -6083,7 +5524,6 @@ namespace {
          * is associated with a Session instance.
          *
          * @return bool true when the Request contains a Session object, false otherwise
-         * @api 
          * @static 
          */
         public static function hasSession(){
@@ -6095,7 +5535,6 @@ namespace {
          * Sets the Session.
          *
          * @param \Symfony\Component\HttpFoundation\SessionInterface $session The Session
-         * @api 
          * @static 
          */
         public static function setSession($session){
@@ -6137,7 +5576,6 @@ namespace {
          * @return string The client IP address
          * @see getClientIps()
          * @see http://en.wikipedia.org/wiki/X-Forwarded-For
-         * @api 
          * @static 
          */
         public static function getClientIp(){
@@ -6149,7 +5587,6 @@ namespace {
          * Returns current script name.
          *
          * @return string 
-         * @api 
          * @static 
          */
         public static function getScriptName(){
@@ -6170,7 +5607,6 @@ namespace {
          *  * http://localhost/mysite/about?var=1  returns '/about'
          *
          * @return string The raw path (i.e. not urldecoded)
-         * @api 
          * @static 
          */
         public static function getPathInfo(){
@@ -6189,7 +5625,6 @@ namespace {
          *  * http://localhost/we%20b/index.php  returns '/we%20b'
          *
          * @return string The raw path (i.e. not urldecoded)
-         * @api 
          * @static 
          */
         public static function getBasePath(){
@@ -6206,7 +5641,6 @@ namespace {
          * script filename (e.g. index.php) if one exists.
          *
          * @return string The raw URL (i.e. not urldecoded)
-         * @api 
          * @static 
          */
         public static function getBaseUrl(){
@@ -6218,7 +5652,6 @@ namespace {
          * Gets the request's scheme.
          *
          * @return string 
-         * @api 
          * @static 
          */
         public static function getScheme(){
@@ -6238,7 +5671,6 @@ namespace {
          * configure it via "setTrustedHeaderName()" with the "client-port" key.
          *
          * @return string 
-         * @api 
          * @static 
          */
         public static function getPort(){
@@ -6285,7 +5717,6 @@ namespace {
          * The port name will be appended to the host if it's non-standard.
          *
          * @return string 
-         * @api 
          * @static 
          */
         public static function getHttpHost(){
@@ -6297,7 +5728,6 @@ namespace {
          * Returns the requested URI (path and query string).
          *
          * @return string The raw URI (i.e. not URI decoded)
-         * @api 
          * @static 
          */
         public static function getRequestUri(){
@@ -6324,7 +5754,6 @@ namespace {
          *
          * @return string A normalized URI (URL) for the Request
          * @see getQueryString()
-         * @api 
          * @static 
          */
         public static function getUri(){
@@ -6337,7 +5766,6 @@ namespace {
          *
          * @param string $path A path to use instead of the current one
          * @return string The normalized URI for the path
-         * @api 
          * @static 
          */
         public static function getUriForPath($path){
@@ -6376,7 +5804,6 @@ namespace {
          * and have consistent escaping.
          *
          * @return string|null A normalized query string for the Request
-         * @api 
          * @static 
          */
         public static function getQueryString(){
@@ -6397,7 +5824,6 @@ namespace {
          * the "client-proto" key.
          *
          * @return bool 
-         * @api 
          * @static 
          */
         public static function isSecure(){
@@ -6418,7 +5844,6 @@ namespace {
          *
          * @return string 
          * @throws \UnexpectedValueException when the host name is invalid
-         * @api 
          * @static 
          */
         public static function getHost(){
@@ -6430,7 +5855,6 @@ namespace {
          * Sets the request method.
          *
          * @param string $method
-         * @api 
          * @static 
          */
         public static function setMethod($method){
@@ -6450,7 +5874,6 @@ namespace {
          * The method is always an uppercased string.
          *
          * @return string The request method
-         * @api 
          * @see getRealMethod()
          * @static 
          */
@@ -6476,7 +5899,6 @@ namespace {
          *
          * @param string $format The format
          * @return string The associated mime type (null if not found)
-         * @api 
          * @static 
          */
         public static function getMimeType($format){
@@ -6489,7 +5911,6 @@ namespace {
          *
          * @param string $mimeType The associated mime type
          * @return string|null The format (null if not found)
-         * @api 
          * @static 
          */
         public static function getFormat($mimeType){
@@ -6502,7 +5923,6 @@ namespace {
          *
          * @param string $format The format
          * @param string|array $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
-         * @api 
          * @static 
          */
         public static function setFormat($format, $mimeTypes){
@@ -6521,7 +5941,6 @@ namespace {
          *
          * @param string $default The default format
          * @return string The request format
-         * @api 
          * @static 
          */
         public static function getRequestFormat($default = 'html'){
@@ -6533,7 +5952,6 @@ namespace {
          * Sets the request format.
          *
          * @param string $format The request format.
-         * @api 
          * @static 
          */
         public static function setRequestFormat($format){
@@ -6545,7 +5963,6 @@ namespace {
          * Gets the format associated with the request.
          *
          * @return string|null The format (null if no content type is present)
-         * @api 
          * @static 
          */
         public static function getContentType(){
@@ -6557,7 +5974,6 @@ namespace {
          * Sets the default locale.
          *
          * @param string $locale
-         * @api 
          * @static 
          */
         public static function setDefaultLocale($locale){
@@ -6580,7 +5996,6 @@ namespace {
          * Sets the locale.
          *
          * @param string $locale
-         * @api 
          * @static 
          */
         public static function setLocale($locale){
@@ -6615,7 +6030,6 @@ namespace {
          * Checks whether the method is safe or not.
          *
          * @return bool 
-         * @api 
          * @static 
          */
         public static function isMethodSafe(){
@@ -6663,7 +6077,6 @@ namespace {
          *
          * @param array $locales An array of ordered available locales
          * @return string|null The preferred locale
-         * @api 
          * @static 
          */
         public static function getPreferredLanguage($locales = null){
@@ -6675,7 +6088,6 @@ namespace {
          * Gets a list of languages acceptable by the client browser.
          *
          * @return array Languages ordered in the user browser preferences
-         * @api 
          * @static 
          */
         public static function getLanguages(){
@@ -6687,7 +6099,6 @@ namespace {
          * Gets a list of charsets acceptable by the client browser.
          *
          * @return array List of charsets in preferable order
-         * @api 
          * @static 
          */
         public static function getCharsets(){
@@ -6710,7 +6121,6 @@ namespace {
          * Gets a list of content types acceptable by the client browser.
          *
          * @return array List of content types in preferable order
-         * @api 
          * @static 
          */
         public static function getAcceptableContentTypes(){
@@ -6726,7 +6136,6 @@ namespace {
          *
          * @link http://en.wikipedia.org/wiki/List_of_Ajax_frameworks#JavaScript
          * @return bool true if the request is an XMLHttpRequest, false otherwise
-         * @api 
          * @static 
          */
         public static function isXmlHttpRequest(){
@@ -7254,6 +6663,22 @@ namespace {
          * @return mixed 
          * @static 
          */
+        public static function onQueue($queue, $view, $data, $callback){
+            return \Illuminate\Mail\Mailer::onQueue($queue, $view, $data, $callback);
+        }
+        
+        /**
+         * Queue a new e-mail message for sending on the given queue.
+         * 
+         * This method didn't match rest of framework's "onQueue" phrasing. Added "onQueue".
+         *
+         * @param string $queue
+         * @param string|array $view
+         * @param array $data
+         * @param \Closure|string $callback
+         * @return mixed 
+         * @static 
+         */
         public static function queueOn($queue, $view, $data, $callback){
             return \Illuminate\Mail\Mailer::queueOn($queue, $view, $data, $callback);
         }
@@ -7398,83 +6823,18 @@ namespace {
     }
 
 
-    class Password extends \Illuminate\Support\Facades\Password{
+    class Queue extends \Illuminate\Support\Facades\Queue{
         
         /**
-         * Send a password reset link to a user.
+         * Register an event listener for the after job event.
          *
-         * @param array $credentials
-         * @param \Closure|null $callback
-         * @return string 
-         * @static 
-         */
-        public static function sendResetLink($credentials, $callback = null){
-            return \Illuminate\Auth\Passwords\PasswordBroker::sendResetLink($credentials, $callback);
-        }
-        
-        /**
-         * Send the password reset link via e-mail.
-         *
-         * @param \Illuminate\Contracts\Auth\CanResetPassword $user
-         * @param string $token
-         * @param \Closure|null $callback
-         * @return int 
-         * @static 
-         */
-        public static function emailResetLink($user, $token, $callback = null){
-            return \Illuminate\Auth\Passwords\PasswordBroker::emailResetLink($user, $token, $callback);
-        }
-        
-        /**
-         * Reset the password for the given token.
-         *
-         * @param array $credentials
-         * @param \Closure $callback
-         * @return mixed 
-         * @static 
-         */
-        public static function reset($credentials, $callback){
-            return \Illuminate\Auth\Passwords\PasswordBroker::reset($credentials, $callback);
-        }
-        
-        /**
-         * Set a custom password validator.
-         *
-         * @param \Closure $callback
+         * @param mixed $callback
          * @return void 
          * @static 
          */
-        public static function validator($callback){
-            \Illuminate\Auth\Passwords\PasswordBroker::validator($callback);
+        public static function after($callback){
+            \Illuminate\Queue\QueueManager::after($callback);
         }
-        
-        /**
-         * Determine if the passwords match for the request.
-         *
-         * @param array $credentials
-         * @return bool 
-         * @static 
-         */
-        public static function validateNewPassword($credentials){
-            return \Illuminate\Auth\Passwords\PasswordBroker::validateNewPassword($credentials);
-        }
-        
-        /**
-         * Get the user for the given credentials.
-         *
-         * @param array $credentials
-         * @return \Illuminate\Contracts\Auth\CanResetPassword 
-         * @throws \UnexpectedValueException
-         * @static 
-         */
-        public static function getUser($credentials){
-            return \Illuminate\Auth\Passwords\PasswordBroker::getUser($credentials);
-        }
-        
-    }
-
-
-    class Queue extends \Illuminate\Support\Facades\Queue{
         
         /**
          * Register an event listener for the daemon queue loop.
@@ -7604,7 +6964,7 @@ namespace {
          * @param mixed $data
          * @param string $queue
          * @return mixed 
-         * @throws \Exception
+         * @throws \Throwable
          * @static 
          */
         public static function push($job, $data = '', $queue = null){
@@ -8349,6 +7709,8 @@ namespace {
         /**
          * Determine if the given content types match.
          *
+         * @param string $actual
+         * @param string $type
          * @return bool 
          * @static 
          */
@@ -8450,7 +7812,6 @@ namespace {
          * @param array $files The FILES parameters
          * @param array $server The SERVER parameters
          * @return \Symfony\Component\HttpFoundation\Request The duplicated request
-         * @api 
          * @static 
          */
         public static function duplicate($query = null, $request = null, $attributes = null, $cookies = null, $files = null, $server = null){
@@ -8587,8 +7948,7 @@ namespace {
          * @param array $cookies The COOKIE parameters
          * @param array $files The FILES parameters
          * @param array $server The SERVER parameters
-         * @param string $content The raw body data
-         * @api 
+         * @param string|resource $content The raw body data
          * @static 
          */
         public static function initialize($query = array(), $request = array(), $attributes = array(), $cookies = array(), $files = array(), $server = array(), $content = null){
@@ -8600,7 +7960,6 @@ namespace {
          * Creates a new request with values from PHP's super globals.
          *
          * @return \Symfony\Component\HttpFoundation\Request A new request
-         * @api 
          * @static 
          */
         public static function createFromGlobals(){
@@ -8622,7 +7981,6 @@ namespace {
          * @param array $server The server parameters ($_SERVER)
          * @param string $content The raw body data
          * @return \Symfony\Component\HttpFoundation\Request A Request instance
-         * @api 
          * @static 
          */
         public static function create($uri, $method = 'GET', $parameters = array(), $cookies = array(), $files = array(), $server = array(), $content = null){
@@ -8651,7 +8009,6 @@ namespace {
          * It overrides $_GET, $_POST, $_REQUEST, $_SERVER, $_COOKIE.
          * $_FILES is never overridden, see rfc1867
          *
-         * @api 
          * @static 
          */
         public static function overrideGlobals(){
@@ -8665,7 +8022,6 @@ namespace {
          * You should only list the reverse proxies that you manage directly.
          *
          * @param array $proxies A list of trusted proxies
-         * @api 
          * @static 
          */
         public static function setTrustedProxies($proxies){
@@ -8817,7 +8173,6 @@ namespace {
          * Gets the Session.
          *
          * @return \Symfony\Component\HttpFoundation\SessionInterface|null The session
-         * @api 
          * @static 
          */
         public static function getSession(){
@@ -8830,7 +8185,6 @@ namespace {
          * previous requests.
          *
          * @return bool 
-         * @api 
          * @static 
          */
         public static function hasPreviousSession(){
@@ -8846,7 +8200,6 @@ namespace {
          * is associated with a Session instance.
          *
          * @return bool true when the Request contains a Session object, false otherwise
-         * @api 
          * @static 
          */
         public static function hasSession(){
@@ -8858,7 +8211,6 @@ namespace {
          * Sets the Session.
          *
          * @param \Symfony\Component\HttpFoundation\SessionInterface $session The Session
-         * @api 
          * @static 
          */
         public static function setSession($session){
@@ -8900,7 +8252,6 @@ namespace {
          * @return string The client IP address
          * @see getClientIps()
          * @see http://en.wikipedia.org/wiki/X-Forwarded-For
-         * @api 
          * @static 
          */
         public static function getClientIp(){
@@ -8912,7 +8263,6 @@ namespace {
          * Returns current script name.
          *
          * @return string 
-         * @api 
          * @static 
          */
         public static function getScriptName(){
@@ -8933,7 +8283,6 @@ namespace {
          *  * http://localhost/mysite/about?var=1  returns '/about'
          *
          * @return string The raw path (i.e. not urldecoded)
-         * @api 
          * @static 
          */
         public static function getPathInfo(){
@@ -8952,7 +8301,6 @@ namespace {
          *  * http://localhost/we%20b/index.php  returns '/we%20b'
          *
          * @return string The raw path (i.e. not urldecoded)
-         * @api 
          * @static 
          */
         public static function getBasePath(){
@@ -8969,7 +8317,6 @@ namespace {
          * script filename (e.g. index.php) if one exists.
          *
          * @return string The raw URL (i.e. not urldecoded)
-         * @api 
          * @static 
          */
         public static function getBaseUrl(){
@@ -8981,7 +8328,6 @@ namespace {
          * Gets the request's scheme.
          *
          * @return string 
-         * @api 
          * @static 
          */
         public static function getScheme(){
@@ -9001,7 +8347,6 @@ namespace {
          * configure it via "setTrustedHeaderName()" with the "client-port" key.
          *
          * @return string 
-         * @api 
          * @static 
          */
         public static function getPort(){
@@ -9048,7 +8393,6 @@ namespace {
          * The port name will be appended to the host if it's non-standard.
          *
          * @return string 
-         * @api 
          * @static 
          */
         public static function getHttpHost(){
@@ -9060,7 +8404,6 @@ namespace {
          * Returns the requested URI (path and query string).
          *
          * @return string The raw URI (i.e. not URI decoded)
-         * @api 
          * @static 
          */
         public static function getRequestUri(){
@@ -9087,7 +8430,6 @@ namespace {
          *
          * @return string A normalized URI (URL) for the Request
          * @see getQueryString()
-         * @api 
          * @static 
          */
         public static function getUri(){
@@ -9100,7 +8442,6 @@ namespace {
          *
          * @param string $path A path to use instead of the current one
          * @return string The normalized URI for the path
-         * @api 
          * @static 
          */
         public static function getUriForPath($path){
@@ -9139,7 +8480,6 @@ namespace {
          * and have consistent escaping.
          *
          * @return string|null A normalized query string for the Request
-         * @api 
          * @static 
          */
         public static function getQueryString(){
@@ -9160,7 +8500,6 @@ namespace {
          * the "client-proto" key.
          *
          * @return bool 
-         * @api 
          * @static 
          */
         public static function isSecure(){
@@ -9181,7 +8520,6 @@ namespace {
          *
          * @return string 
          * @throws \UnexpectedValueException when the host name is invalid
-         * @api 
          * @static 
          */
         public static function getHost(){
@@ -9193,7 +8531,6 @@ namespace {
          * Sets the request method.
          *
          * @param string $method
-         * @api 
          * @static 
          */
         public static function setMethod($method){
@@ -9213,7 +8550,6 @@ namespace {
          * The method is always an uppercased string.
          *
          * @return string The request method
-         * @api 
          * @see getRealMethod()
          * @static 
          */
@@ -9239,7 +8575,6 @@ namespace {
          *
          * @param string $format The format
          * @return string The associated mime type (null if not found)
-         * @api 
          * @static 
          */
         public static function getMimeType($format){
@@ -9252,7 +8587,6 @@ namespace {
          *
          * @param string $mimeType The associated mime type
          * @return string|null The format (null if not found)
-         * @api 
          * @static 
          */
         public static function getFormat($mimeType){
@@ -9265,7 +8599,6 @@ namespace {
          *
          * @param string $format The format
          * @param string|array $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
-         * @api 
          * @static 
          */
         public static function setFormat($format, $mimeTypes){
@@ -9284,7 +8617,6 @@ namespace {
          *
          * @param string $default The default format
          * @return string The request format
-         * @api 
          * @static 
          */
         public static function getRequestFormat($default = 'html'){
@@ -9296,7 +8628,6 @@ namespace {
          * Sets the request format.
          *
          * @param string $format The request format.
-         * @api 
          * @static 
          */
         public static function setRequestFormat($format){
@@ -9308,7 +8639,6 @@ namespace {
          * Gets the format associated with the request.
          *
          * @return string|null The format (null if no content type is present)
-         * @api 
          * @static 
          */
         public static function getContentType(){
@@ -9320,7 +8650,6 @@ namespace {
          * Sets the default locale.
          *
          * @param string $locale
-         * @api 
          * @static 
          */
         public static function setDefaultLocale($locale){
@@ -9343,7 +8672,6 @@ namespace {
          * Sets the locale.
          *
          * @param string $locale
-         * @api 
          * @static 
          */
         public static function setLocale($locale){
@@ -9378,7 +8706,6 @@ namespace {
          * Checks whether the method is safe or not.
          *
          * @return bool 
-         * @api 
          * @static 
          */
         public static function isMethodSafe(){
@@ -9426,7 +8753,6 @@ namespace {
          *
          * @param array $locales An array of ordered available locales
          * @return string|null The preferred locale
-         * @api 
          * @static 
          */
         public static function getPreferredLanguage($locales = null){
@@ -9438,7 +8764,6 @@ namespace {
          * Gets a list of languages acceptable by the client browser.
          *
          * @return array Languages ordered in the user browser preferences
-         * @api 
          * @static 
          */
         public static function getLanguages(){
@@ -9450,7 +8775,6 @@ namespace {
          * Gets a list of charsets acceptable by the client browser.
          *
          * @return array List of charsets in preferable order
-         * @api 
          * @static 
          */
         public static function getCharsets(){
@@ -9473,7 +8797,6 @@ namespace {
          * Gets a list of content types acceptable by the client browser.
          *
          * @return array List of content types in preferable order
-         * @api 
          * @static 
          */
         public static function getAcceptableContentTypes(){
@@ -9489,7 +8812,6 @@ namespace {
          *
          * @link http://en.wikipedia.org/wiki/List_of_Ajax_frameworks#JavaScript
          * @return bool true if the request is an XMLHttpRequest, false otherwise
-         * @api 
          * @static 
          */
         public static function isXmlHttpRequest(){
@@ -10335,147 +9657,6 @@ namespace {
     }
 
 
-    class Schema extends \Illuminate\Support\Facades\Schema{
-        
-        /**
-         * Determine if the given table exists.
-         *
-         * @param string $table
-         * @return bool 
-         * @static 
-         */
-        public static function hasTable($table){
-            return \Illuminate\Database\Schema\Builder::hasTable($table);
-        }
-        
-        /**
-         * Determine if the given table has a given column.
-         *
-         * @param string $table
-         * @param string $column
-         * @return bool 
-         * @static 
-         */
-        public static function hasColumn($table, $column){
-            return \Illuminate\Database\Schema\Builder::hasColumn($table, $column);
-        }
-        
-        /**
-         * Determine if the given table has given columns.
-         *
-         * @param string $table
-         * @param array $columns
-         * @return bool 
-         * @static 
-         */
-        public static function hasColumns($table, $columns){
-            return \Illuminate\Database\Schema\Builder::hasColumns($table, $columns);
-        }
-        
-        /**
-         * Get the column listing for a given table.
-         *
-         * @param string $table
-         * @return array 
-         * @static 
-         */
-        public static function getColumnListing($table){
-            return \Illuminate\Database\Schema\Builder::getColumnListing($table);
-        }
-        
-        /**
-         * Modify a table on the schema.
-         *
-         * @param string $table
-         * @param \Closure $callback
-         * @return \Illuminate\Database\Schema\Blueprint 
-         * @static 
-         */
-        public static function table($table, $callback){
-            return \Illuminate\Database\Schema\Builder::table($table, $callback);
-        }
-        
-        /**
-         * Create a new table on the schema.
-         *
-         * @param string $table
-         * @param \Closure $callback
-         * @return \Illuminate\Database\Schema\Blueprint 
-         * @static 
-         */
-        public static function create($table, $callback){
-            return \Illuminate\Database\Schema\Builder::create($table, $callback);
-        }
-        
-        /**
-         * Drop a table from the schema.
-         *
-         * @param string $table
-         * @return \Illuminate\Database\Schema\Blueprint 
-         * @static 
-         */
-        public static function drop($table){
-            return \Illuminate\Database\Schema\Builder::drop($table);
-        }
-        
-        /**
-         * Drop a table from the schema if it exists.
-         *
-         * @param string $table
-         * @return \Illuminate\Database\Schema\Blueprint 
-         * @static 
-         */
-        public static function dropIfExists($table){
-            return \Illuminate\Database\Schema\Builder::dropIfExists($table);
-        }
-        
-        /**
-         * Rename a table on the schema.
-         *
-         * @param string $from
-         * @param string $to
-         * @return \Illuminate\Database\Schema\Blueprint 
-         * @static 
-         */
-        public static function rename($from, $to){
-            return \Illuminate\Database\Schema\Builder::rename($from, $to);
-        }
-        
-        /**
-         * Get the database connection instance.
-         *
-         * @return \Illuminate\Database\Connection 
-         * @static 
-         */
-        public static function getConnection(){
-            return \Illuminate\Database\Schema\Builder::getConnection();
-        }
-        
-        /**
-         * Set the database connection instance.
-         *
-         * @param \Illuminate\Database\Connection $connection
-         * @return $this 
-         * @static 
-         */
-        public static function setConnection($connection){
-            return \Illuminate\Database\Schema\Builder::setConnection($connection);
-        }
-        
-        /**
-         * Set the Schema Blueprint resolver callback.
-         *
-         * @param \Closure $resolver
-         * @return void 
-         * @static 
-         */
-        public static function blueprintResolver($resolver){
-            \Illuminate\Database\Schema\Builder::blueprintResolver($resolver);
-        }
-        
-    }
-
-
     class Session extends \Illuminate\Support\Facades\Session{
         
         /**
@@ -10550,7 +9731,6 @@ namespace {
          *
          * @return bool True if session started.
          * @throws \RuntimeException If session fails to start.
-         * @api 
          * @static 
          */
         public static function start(){
@@ -10561,7 +9741,6 @@ namespace {
          * Returns the session ID.
          *
          * @return string The session ID.
-         * @api 
          * @static 
          */
         public static function getId(){
@@ -10572,7 +9751,6 @@ namespace {
          * Sets the session ID.
          *
          * @param string $id
-         * @api 
          * @static 
          */
         public static function setId($id){
@@ -10594,7 +9772,6 @@ namespace {
          * Returns the session name.
          *
          * @return mixed The session name.
-         * @api 
          * @static 
          */
         public static function getName(){
@@ -10605,7 +9782,6 @@ namespace {
          * Sets the session name.
          *
          * @param string $name
-         * @api 
          * @static 
          */
         public static function setName($name){
@@ -10623,7 +9799,6 @@ namespace {
          *                      to expire with browser session. Time is in seconds, and is
          *                      not a Unix timestamp.
          * @return bool True if session invalidated, false if error.
-         * @api 
          * @static 
          */
         public static function invalidate($lifetime = null){
@@ -10640,7 +9815,6 @@ namespace {
          *                       to expire with browser session. Time is in seconds, and is
          *                       not a Unix timestamp.
          * @return bool True if session migrated, false if error.
-         * @api 
          * @static 
          */
         public static function migrate($destroy = false, $lifetime = null){
@@ -10686,7 +9860,6 @@ namespace {
          *
          * @param string $name The attribute name
          * @return bool true if the attribute is defined, false otherwise
-         * @api 
          * @static 
          */
         public static function has($name){
@@ -10699,7 +9872,6 @@ namespace {
          * @param string $name The attribute name
          * @param mixed $default The default value if not found.
          * @return mixed 
-         * @api 
          * @static 
          */
         public static function get($name, $default = null){
@@ -10746,7 +9918,6 @@ namespace {
          *
          * @param string $name
          * @param mixed $value
-         * @api 
          * @static 
          */
         public static function set($name, $value){
@@ -10825,7 +9996,6 @@ namespace {
          * Returns attributes.
          *
          * @return array Attributes
-         * @api 
          * @static 
          */
         public static function all(){
@@ -10847,7 +10017,6 @@ namespace {
          *
          * @param string $name
          * @return mixed The removed value or null when it does not exist
-         * @api 
          * @static 
          */
         public static function remove($name){
@@ -10868,7 +10037,6 @@ namespace {
         /**
          * Clears all attributes.
          *
-         * @api 
          * @static 
          */
         public static function clear(){
@@ -11159,7 +10327,7 @@ namespace {
         }
         
         /**
-         * Generate a absolute URL to the given path.
+         * Generate an absolute URL to the given path.
          *
          * @param string $path
          * @param mixed $extra

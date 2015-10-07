@@ -2,6 +2,7 @@
 	"name": "laravel/laravel",
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
+  	"minimum-stability" : "dev",
 	"license": "MIT",
 	"type": "project",
 	"repositories": [
@@ -13,13 +14,11 @@
 	"require": {
 	  	"php": ">=5.5.9",
 	  	"laravel/framework": "5.1.*",
-		"vladkens/vk": "dev-master",
 		"predis/predis": "1.1.*@dev",
-		"guzzlehttp/guzzle": "~5.2",
-		"dropbox/dropbox-sdk": "dev-master",
 		"barryvdh/laravel-ide-helper": "^2.0",
-		"intervention/image": "^2.3",
-		"rap2hpoutre/laravel-log-viewer": "^0.4.0"
+		"rap2hpoutre/laravel-log-viewer": "^0.4.0",
+	  	"intervention/image": "^2.3",
+		"getjump/vk": "*"
 	},
   "require-dev": {
 	"mockery/mockery": "0.9.*",
