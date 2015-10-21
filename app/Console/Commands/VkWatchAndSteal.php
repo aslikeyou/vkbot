@@ -133,52 +133,56 @@ class VkWatchAndSteal extends Command
         /** @var Collection $myGroups */
         $myGroups = MyGroup::query()->whereIn('name', ['УШИ ВЯНУТ', 'What`s Woman Love'])->get();
         $myGroups->each(function(MyGroup $myGroup) use ($vk) {
-            /** @var Collection $otherGroups */
-            $otherGroups = $myGroup->otherGroups;
-            if($otherGroups->count() < 1) {
-                $this->warn($myGroup->name.' has no other groups');
-                return ;
+            try {
+                /** @var Collection $otherGroups */
+                $otherGroups = $myGroup->otherGroups;
+                if($otherGroups->count() < 1) {
+                    $this->warn($myGroup->name.' has no other groups');
+                    return ;
+                }
+                /** @var OtherGroup $randomRow */
+                $randomRow = $otherGroups->random(1);
+
+                $data = $vk->request('wall.get', [
+                    'domain' => $randomRow->screen_name
+                ])->fetchData()->items;
+                $data = $this->filterPost($data);
+
+                usort($data, function($a, $b) {
+                    $countA = $a->reposts->count;
+                    $countB = $b->reposts->count;
+                    if ($countA == $countB) {
+                        return 0;
+                    }
+                    return ($countA < $countB) ? 1 : -1;
+                });
+
+                $reducedItem = array_reduce($data, function($carry, $item) use ($myGroup) {
+                    if($carry !== null) {
+                        return $carry;
+                    }
+
+                    $hash = hash_file('sha256',$item->attachments[0]->photo->photo_75);
+                    $hashKey = $myGroup->id.'.'.$hash;
+                    if(\Cache::has($hashKey)) {
+                        return null;
+                    }
+
+                    \Cache::add($hashKey, 123, Carbon::now()->addDay());
+                    return $item;
+                });
+
+                if($reducedItem === null) {
+                    $this->warn('No records found in group '.$randomRow->name);
+                    return ;
+                }
+
+                $id = $this->uploadPost($vk, $myGroup->id, $reducedItem);
+
+                $this->info("Post: ".$id." was added to ".$myGroup->name);
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage());
             }
-            /** @var OtherGroup $randomRow */
-            $randomRow = $otherGroups->random(1);
-
-            $data = $vk->request('wall.get', [
-                'domain' => $randomRow->screen_name
-            ])->fetchData()->items;
-            $data = $this->filterPost($data);
-
-            usort($data, function($a, $b) {
-                $countA = $a->reposts->count;
-                $countB = $b->reposts->count;
-                if ($countA == $countB) {
-                    return 0;
-                }
-                return ($countA < $countB) ? 1 : -1;
-            });
-
-            $reducedItem = array_reduce($data, function($carry, $item) use ($myGroup) {
-                if($carry !== null) {
-                    return $carry;
-                }
-
-                $hash = hash_file('sha256',$item->attachments[0]->photo->photo_75);
-                $hashKey = $myGroup->id.'.'.$hash;
-                if(\Cache::has($hashKey)) {
-                    return null;
-                }
-
-                \Cache::add($hashKey, 123, Carbon::now()->addDay());
-                return $item;
-            });
-
-            if($reducedItem === null) {
-                $this->warn('No records found in group '.$randomRow->name);
-                return ;
-            }
-
-            $id = $this->uploadPost($vk, $myGroup->id, $reducedItem);
-
-            $this->info("Post: ".$id." was added to ".$myGroup->name);
         });
     }
 }
