@@ -5,8 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class WallPosts
- *
+ * @property integer $id
  * @property integer $date
  * @property string $post_type
  * @property string $text
@@ -14,8 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $comments_count
  * @property integer $likes_count
  * @property integer $reposts_count
- * @property int id
- * @package App
  */
 class WallPost extends Model
 {

@@ -11,17 +11,18 @@
 |
 */
 use Illuminate\Support\Debug\Dumper;
-Route::get('/test', function() {
-    (new Dumper())->dump(\Cache::getStore());
-
-    \Cache::tags(['user'])->put('test', rand(10, 100), 25);
-    (new Dumper())->dump(\Cache::tags(['user'])->get('test'));
-    \Cache::tags(['user'])->flush();
-    (new Dumper())->dump(\Cache::tags(['user'])->get('test'));
-});
+Route::get('/test', 'WelcomeController@test');
+Route::resource('watch_groups', 'WatchGroupController');
+Route::resource('watch_relations', 'WatchRelationController');
 Route::match(['get', 'post'], '/', 'WelcomeController@index');
 Route::match(['get'], '/wall', 'WelcomeController@getPost');
+Route::match(['get'], '/welcome', 'WelcomeController@welcome');
+Route::match(['get', 'post'], '/steal', 'WelcomeController@steal');
+Route::match(['get', 'post'], '/watch', 'WelcomeController@watch');
 Route::match(['get'], '/mygroups', 'WelcomeController@setUpMyGroups');
+Route::match(['get', 'post'], '/sqlparse', 'WelcomeController@sqlparse');
+
+
 
 //Route::get('/manage', function() {
 //    return view('manage');

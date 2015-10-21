@@ -4,9 +4,58 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3f3ebd362ff3930661e5a901458e22d2",
-    "content-hash": "a3e758b3be2aefe447ddf0f6c84ad00b",
+    "hash": "4e6fc1ddfb60531ed9c7183d90bac300",
+    "content-hash": "9e11758cec4ce73d9bf8e2c0c5836100",
     "packages": [
+        {
+            "name": "analog/analog",
+            "version": "1.0.7-stable",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jbroadway/analog.git",
+                "reference": "69615c0e8b4033169b45d58f778fd3ba638d1d52"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jbroadway/analog/zipball/69615c0e8b4033169b45d58f778fd3ba638d1d52",
+                "reference": "69615c0e8b4033169b45d58f778fd3ba638d1d52",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "psr/log": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Analog": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Johnny Broadway",
+                    "email": "johnny@johnnybroadway.com",
+                    "homepage": "http://www.johnnybroadway.com/"
+                }
+            ],
+            "description": "PHP 5.3+ micro logging class that can be extended via closures. Includes several pre-built handlers including file, mail, syslog, HTTP post, and MongoDB.",
+            "homepage": "https://github.com/jbroadway/analog",
+            "keywords": [
+                "alerts",
+                "debug",
+                "debugging",
+                "error",
+                "log",
+                "logger",
+                "logging",
+                "syslog"
+            ],
+            "time": "2015-05-25 15:23:49"
+        },
         {
             "name": "barryvdh/laravel-ide-helper",
             "version": "dev-master",
@@ -223,7 +272,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/3a422c73f7bc556d39571f436b61fd58ccae0eb0",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/097e7ba84f64a427e55008117ef2bb94096731dc",
                 "reference": "3a422c73f7bc556d39571f436b61fd58ccae0eb0",
                 "shasum": ""
             },
@@ -326,6 +375,62 @@
                 "vkontakte"
             ],
             "time": "2015-03-18 22:47:31"
+        },
+        {
+            "name": "greenlion/php-sql-parser",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/greenlion/PHP-SQL-Parser.git",
+                "reference": "8d11ec6ef9692b3cdd8e58aa94df5e80b0b31a31"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/greenlion/PHP-SQL-Parser/zipball/8d11ec6ef9692b3cdd8e58aa94df5e80b0b31a31",
+                "reference": "8d11ec6ef9692b3cdd8e58aa94df5e80b0b31a31",
+                "shasum": ""
+            },
+            "require": {
+                "analog/analog": "^1.0.6",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0.14",
+                "squizlabs/php_codesniffer": "^1.5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPSQLParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "André Rothe",
+                    "email": "phosco@gmx.de",
+                    "homepage": "https://www.phosco.info",
+                    "role": "Committer"
+                },
+                {
+                    "name": "Justin Swanhart",
+                    "email": "greenlion@gmail.com",
+                    "homepage": "http://code.google.com/u/greenlion@gmail.com/",
+                    "role": "Owner"
+                }
+            ],
+            "description": "A pure PHP SQL (non validating) parser w/ focus on MySQL dialect of SQL",
+            "homepage": "https://github.com/greenlion/PHP-SQL-Parser",
+            "keywords": [
+                "creator",
+                "mysql",
+                "parser",
+                "sql"
+            ],
+            "time": "2015-06-19 06:53:31"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -513,7 +618,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/44c9a6bb292e50cf8a1e4b5030c7954c2709c089",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/e6c9cd03d6b2a870e74da03332feeb97d477fc87",
                 "reference": "44c9a6bb292e50cf8a1e4b5030c7954c2709c089",
                 "shasum": ""
             },
@@ -720,7 +825,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/cbf68c02542e3d668086283c1928347d1e6f605f",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/63a4708d883871826dbfc4fa9e286ad7c81e0dc1",
                 "reference": "cbf68c02542e3d668086283c1928347d1e6f605f",
                 "shasum": ""
             },
@@ -848,7 +953,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e8b7d3cfb3270c412b21b26f87d6f6d9dfc67ce9",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f46f18a62f50d85750798d1d2f57fb04e1cdc707",
                 "reference": "e8b7d3cfb3270c412b21b26f87d6f6d9dfc67ce9",
                 "shasum": ""
             },
@@ -1452,6 +1557,50 @@
             "time": "2015-09-14 07:02:24"
         },
         {
+            "name": "saxulum/saxulum-phpdoc-generator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saxulum/saxulum-phpdoc-generator.git",
+                "reference": "929703afe82e09c892881c80e5f5cd2dd7cb37cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/saxulum/saxulum-phpdoc-generator/zipball/929703afe82e09c892881c80e5f5cd2dd7cb37cb",
+                "reference": "929703afe82e09c892881c80e5f5cd2dd7cb37cb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Saxulum\\PhpDocGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dominik Zogg",
+                    "email": "dominik.zogg@gmail.com"
+                }
+            ],
+            "description": "Saxulum PhpDoc Generator",
+            "keywords": [
+                "generator",
+                "phpdoc",
+                "saxulum"
+            ],
+            "time": "2015-03-07 09:52:03"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "5.x-dev",
             "source": {
@@ -1514,7 +1663,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/class-loader/zipball/650517ffba127aaedb9c93f9f1cf748b0aef4915",
+                "url": "https://api.github.com/repos/symfony/class-loader/zipball/c56d87452d257bfd9c0626a74d42f7d32b89dd12",
                 "reference": "650517ffba127aaedb9c93f9f1cf748b0aef4915",
                 "shasum": ""
             },
@@ -1564,7 +1713,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/d0ee2c27ec3290f9049ce94e7dbcf0836980676b",
+                "url": "https://api.github.com/repos/symfony/console/zipball/c482a247eb1d8bc778595e76adf5b999ad96e13a",
                 "reference": "d0ee2c27ec3290f9049ce94e7dbcf0836980676b",
                 "shasum": ""
             },
@@ -1621,7 +1770,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/23078cfc5eeeed86a2ba30c355e350b4df5635b5",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/e1b865b26be4a56d22a8dee398375044a80c865b",
                 "reference": "23078cfc5eeeed86a2ba30c355e350b4df5635b5",
                 "shasum": ""
             },
@@ -1674,7 +1823,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/fc037263d513785bed338fdc770089daf3718f3e",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/fb9e6887db716939f41af0ba8ef38a1582eb501b",
                 "reference": "fc037263d513785bed338fdc770089daf3718f3e",
                 "shasum": ""
             },
@@ -1729,7 +1878,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/555deb4d960cc820feec84ed72d39a0c6988665c",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/5fef7d8b80d8f9992df99d8ee283f420484c9612",
                 "reference": "555deb4d960cc820feec84ed72d39a0c6988665c",
                 "shasum": ""
             },
@@ -1782,7 +1931,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/1834bd8ece4da49a4135264044b9ac31fdebdc72",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/41899a21d196332ab23e40f76e1276f2b7aa4d0d",
                 "reference": "1834bd8ece4da49a4135264044b9ac31fdebdc72",
                 "shasum": ""
             },
@@ -1840,7 +1989,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/f2bd4fa850b361e346a68f2bbef59a94cd70be19",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/2ffb4e9598db3c48eb6d0ae73b04bbf09280c59d",
                 "reference": "f2bd4fa850b361e346a68f2bbef59a94cd70be19",
                 "shasum": ""
             },
@@ -1889,7 +2038,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/9011846c3c1c9b9cfb442d5c5cccd660cbca1ad8",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/b5aabdcc2d256168aa8226e84610602f031e65af",
                 "reference": "9011846c3c1c9b9cfb442d5c5cccd660cbca1ad8",
                 "shasum": ""
             },
@@ -1942,7 +2091,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/478ac0315f7c149ae860f10404a0187a0a9e8ec0",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/b56f9fad3f1259c1d5cc0a1e5a96c341e9633d5e",
                 "reference": "478ac0315f7c149ae860f10404a0187a0a9e8ec0",
                 "shasum": ""
             },
@@ -2022,7 +2171,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/fe952d32c3b57abad6afd2b3573e7f39b94dc279",
+                "url": "https://api.github.com/repos/symfony/process/zipball/7440f966e8719f39a88600e5c47915a867830126",
                 "reference": "fe952d32c3b57abad6afd2b3573e7f39b94dc279",
                 "shasum": ""
             },
@@ -2071,7 +2220,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/a17bee47ff3689fe3e495c768b64c07c007b784a",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/67a7cd59f52797e2878e63c8bcafdaf41effd780",
                 "reference": "a17bee47ff3689fe3e495c768b64c07c007b784a",
                 "shasum": ""
             },
@@ -2142,7 +2291,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/ffcccbadfd1f28a6b43b0a4ea8d0e185a8b699cb",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/ef299cacc962ef8394f89fa8ba9a90486a607582",
                 "reference": "ffcccbadfd1f28a6b43b0a4ea8d0e185a8b699cb",
                 "shasum": ""
             },
@@ -2203,7 +2352,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/4a74369d1a92b0a7b7691642a9ee9ca38b096ec1",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/e612899e015166c725569c78f5f11ec965c18ad2",
                 "reference": "4a74369d1a92b0a7b7691642a9ee9ca38b096ec1",
                 "shasum": ""
             },
@@ -2645,7 +2794,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ef1ca6835468857944d5c3b48fa503d5554cff2f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/eabf68b476ac7d0f73793aada060f1c1a9bf8979",
                 "reference": "ef1ca6835468857944d5c3b48fa503d5554cff2f",
                 "shasum": ""
             },
@@ -2885,7 +3034,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4ecd63c4e88c8eb77d8a93e76e3c5936ec5c3a04",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/be067d6105286b74272facefc2697038f8807b77",
                 "reference": "4ecd63c4e88c8eb77d8a93e76e3c5936ec5c3a04",
                 "shasum": ""
             },
@@ -3246,7 +3395,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/23af31f402993cfd94e99cbc4b782e9a78eb0e97",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/80e75e39bd6895a2240f5f959a5fec2df501d339",
                 "reference": "23af31f402993cfd94e99cbc4b782e9a78eb0e97",
                 "shasum": ""
             },
@@ -3376,6 +3525,58 @@
             "time": "2015-06-21 13:59:46"
         },
         {
+            "name": "soundintheory/php-sql-parser",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/soundintheory/php-sql-parser.git",
+                "reference": "dcb81216a13be124d21711b8fefb6e80db7af472"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/soundintheory/php-sql-parser/zipball/dcb81216a13be124d21711b8fefb6e80db7af472",
+                "reference": "dcb81216a13be124d21711b8fefb6e80db7af472",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPSQL": "src/"
+                }
+            },
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Swanhart",
+                    "email": "greenlion@gmail.com"
+                },
+                {
+                    "name": "André Rothe",
+                    "email": "phosco@gmx.de"
+                },
+                {
+                    "name": "Dan Vande More",
+                    "homepage": "https://github.com/fimbulvetr",
+                    "role": "contributor"
+                },
+                {
+                    "name": "Andy White",
+                    "homepage": "https://github.com/soundintheory",
+                    "role": "maintainer"
+                }
+            ],
+            "description": "SQL parsing tools for PHP",
+            "support": {
+                "source": "https://github.com/soundintheory/php-sql-parser/tree/1.0"
+            },
+            "time": "2013-08-09 21:16:50"
+        },
+        {
             "name": "symfony/yaml",
             "version": "2.8.x-dev",
             "source": {
@@ -3385,7 +3586,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/36ddab7971364b20229155cd972631a2257d7dac",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/ff7f886a33f5b7a26a94d62f6e14bb9cf0e3bf5d",
                 "reference": "36ddab7971364b20229155cd972631a2257d7dac",
                 "shasum": ""
             },
@@ -3428,7 +3629,9 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "predis/predis": 20
+        "predis/predis": 20,
+        "greenlion/php-sql-parser": 20,
+        "saxulum/saxulum-phpdoc-generator": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

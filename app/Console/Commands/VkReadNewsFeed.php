@@ -16,7 +16,7 @@ class VkReadNewsFeed extends Command
      *
      * @var string
      */
-    protected $signature = 'vk:newsfeed {source_group} {target_group}';
+    protected $signature = 'vk:newsfeed';
 
     /**
      * The console command description.
