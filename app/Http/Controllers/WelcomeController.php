@@ -25,6 +25,11 @@ class WelcomeController extends Controller {
 		$request->route()->setParameter('vk', $vk);
 	}
 
+	public function clearToken() {
+		\Cache::forget('token');
+		return redirect('/');
+	}
+
 	public function filterPost($items) {
 		$items = array_filter($items, function($item) {
 			if($item->post_type !== 'post') {
@@ -235,11 +240,13 @@ class WelcomeController extends Controller {
 	{
 		$token = \Cache::get('token');
 
+		//return view('general');
+
 		if($token === null) {
 			$tokenFromForm = $request->input('token');
 			if($tokenFromForm !== null) {
 				\Cache::forever('token', $tokenFromForm);
-				dd("Token set to ".$tokenFromForm);
+				return redirect('/welcome');
 			}
 
 			$auth = Auth::getInstance();
@@ -248,7 +255,7 @@ class WelcomeController extends Controller {
 				->setSecret('L8lsIl6koOlf3aM4Lh5j')
 				->setRedirectUri('https://oauth.vk.com/blank.html');
 
-			return view('index', [
+			return view('login_main', [
 				'url' => str_replace('response_type=code', 'response_type=token',$auth->getUrl())
 			]);
 		}
