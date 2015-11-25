@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\Handler;
 use App\MyGroup;
 use App\OtherGroup;
 use Carbon\Carbon;
@@ -181,7 +182,7 @@ class VkWatchAndSteal extends Command
 
                 $this->info("Post: ".$id." was added to ".$myGroup->name);
             } catch (\Exception $e) {
-                \Log::error($e->getMessage());
+                \Log::error($e);
             }
         });
     }
