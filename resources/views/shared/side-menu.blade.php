@@ -3,6 +3,9 @@
         <a href="/">Main</a>
     </li>
     <li>
+        <a href="/logs">Logs</a>
+    </li>
+    <li>
         <a href="/steal">Steal post</a>
     </li><li>
         <a href="/watch">Watch posts</a>
