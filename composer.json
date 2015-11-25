@@ -10,7 +10,7 @@
 	  	"laravel/framework": "5.1.*",
 		"predis/predis": "1.1.*@dev",
 		"barryvdh/laravel-ide-helper": "^2.0",
-		"rap2hpoutre/laravel-log-viewer": "^0.4.0",
+		"rap2hpoutre/laravel-log-viewer": "dev-master",
 	  	"intervention/image": "^2.3",
 		"getjump/vk": "*"
 	},

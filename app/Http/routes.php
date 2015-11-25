@@ -27,6 +27,7 @@
 Route::group([
     'middleware' => 'auth.veryBasic'
 ], function() {
+    Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
     Route::get('/test', 'WelcomeController@test');
     Route::get('/clear-token', 'WelcomeController@clearToken');
     Route::resource('watch_groups', 'WatchGroupController');

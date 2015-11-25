@@ -149,7 +149,7 @@ return [
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
-		'Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider',
+		Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class
 	],
 
 	/*
