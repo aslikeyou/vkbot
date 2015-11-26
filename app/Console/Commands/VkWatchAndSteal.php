@@ -45,6 +45,11 @@ class VkWatchAndSteal extends Command
                 return false;
             }
 
+            if(!isset($item->attachments)) {
+                \Log::debug(print_r($item, true));
+                return false;
+            }
+
             if(!is_array($item->attachments) || count($item->attachments) !== 1) {
                 return false;
             }
