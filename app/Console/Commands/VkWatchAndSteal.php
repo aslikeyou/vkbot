@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Exceptions\Handler;
 use App\MyGroup;
 use App\OtherGroup;
+use App\PostsLog;
 use Carbon\Carbon;
 use getjump\Vk\Core;
 use GuzzleHttp\Client;
@@ -186,6 +187,14 @@ class VkWatchAndSteal extends Command
                 $id = $this->uploadPost($vk, $myGroup->id, $reducedItem);
 
                 $this->info("Post: ".$id." was added to ".$myGroup->name);
+                PostsLog::create([
+                    'my_group_name' => $myGroup->name,
+                    'my_group_id' => $myGroup->id,
+                    'my_group_post_id' => $id,
+                    'other_group_name' => $randomRow->screen_name,
+                    'other_group_id' => $randomRow->id,
+                    'post_json' => json_encode($reducedItem)
+                ]);
             } catch (\Exception $e) {
                 \Log::error($e);
             }
